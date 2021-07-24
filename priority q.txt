@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node 
+{
+    int data;
+    int prio;
+    struct node *next;
+}*h;
+
+struct node * newnode(int d,int p)
+{
+    struct node *new = (struct node*)malloc(sizeof(struct node));
+    new->data = d;
+    new->prio = p;
+    new->next = NULL;
+    return new;
+}
+
+void push(int d,int p)
+{
+    struct node *start,*new;
+    start = h;
+    new = newnode(d,p);
+    if(h->prio > p)
+    {
+        new->next = h;
+        h = new;
+        printf("inserted %d\n",h->data);
+    }
+    else
+    {
+        while(start->next!=NULL && (start->next)->prio < p)
+        {
+            start = start->next;
+        }
+        new->next = start->next;
+        start->next = new;
+        printf("inserted %d\n",new->data);
+    }
+}
+
+void pop()
+{
+    struct node *temp = h;
+    h = h->next;
+    //printf("deleted %d\n",temp->data);
+    free(temp);
+}
+
+int peek()
+{
+    return h->data;
+}
+
+int isempty()
+{
+    /*if(h == NULL)
+        return 1;
+    else
+        return 0;*/
+    return h==NULL;
+}
+
+int main()
+{
+    h = newnode(10,6);
+    push(20,4);
+    push(30,7);
+    push(40,9);
+    while(!isempty())
+    {
+        printf("%d ",peek());
+        pop();
+    }
+    return 0;
+}
+
